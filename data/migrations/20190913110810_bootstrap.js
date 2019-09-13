@@ -56,6 +56,32 @@ exports.up = function (knex) {
                 .onUpdate('CASCADE')
 
         })
+    
+        .createTable('contexts', tbl => {
+            tbl.increments();
+            tbl.string('name', 128)
+                .unique()
+                .notNullable();
+        })
+
+        .createTable('task_contexts', tbl => {
+            tbl.increments();
+            // Foreign key
+            tbl.integer('task_id')
+                .unsigned()
+                .notNullable()
+                .references('id')
+                .inTable('task')
+                .onDelete('RESTRICT')
+                .onUpdate('CASCADE')
+            tbl.integer('context_id')
+                .unsigned()
+                .notNullable()
+                .references('id')
+                .inTable('contexts')
+                .onDelete('RESTRICT')
+                .onUpdate('CASCADE')
+        })
 
 
 };

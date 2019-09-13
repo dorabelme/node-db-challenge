@@ -84,6 +84,45 @@ router.delete('/:id', (req, res) => {
         });
 });
 
+router.get('/:id/expanded', (req, res) => {
+    const { id } = req.params;
+
+    const promise1 = Projects.getProjectsById(id)
+        .then(p => {
+            const project = { ...p, 'completed': p.completed === 1 }
+            return project
+        })
+
+    const promise2 = Projects.findTasksForProject(id)
+        .then(_tasks => {
+            const tasks = _tasks.map(t => {
+                return { ...t, 'completed': t.completed === 1 }
+            })
+
+            return tasks
+        })
+
+    const promise3 = Projects.findResourcesForProject(id)
+
+    const finalPromise = Promise.all([promise1, promise2, promise3])
+
+    finalPromise.then(arr => {
+        const project = arr[0]
+        const tasks = arr[1]
+        const resources = arr[2]
+
+        var returnObject = project
+        returnObject['tasks'] = tasks
+        returnObject['resources'] = resources
+
+        return res.json(returnObject);
+    })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json({ message: 'Failed to get projects.' });
+        });
+});
+
 
 
 module.exports = router;

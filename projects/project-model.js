@@ -6,6 +6,8 @@ module.exports = {
     getProjectsById,
     updateProjects,
     removeProjects,
+    findTasksForProject,
+    findResourcesForProject
 }
 
 function getProjects() {
@@ -35,3 +37,27 @@ function removeProjects(id) {
         .where('id', id)
         .del();
 }
+
+function findTasksForProject(id) {
+    return db('projects as P')
+        .innerJoin("task as T", "T.project_id", "=", "P.id")
+        .select(
+            "T.id",
+            "T.description",
+            "T.notes",
+            "T.completed"
+        )
+        .where({ project_id: id });
+}
+
+function findResourcesForProject(id) {
+    return db('project_resources as PR')
+        .innerJoin("resources as R", "R.id", "=", "PR.resource_id")
+        .select(
+            "R.id",
+            "R.name",
+            "R.description"
+        )
+        .where({ project_id: id });
+}
+
