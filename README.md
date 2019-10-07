@@ -40,11 +40,19 @@ Demonstrate your understanding of this week's concepts by answering the followin
 
 - [ ] Explain the difference between `Relational Databases` and `SQL`.
 
+RDBMS is a Relational Database Management System, the database software itself. It manages storage, queries, updates and uses a relational model of data. SQL is the language used to interact with this system.
+
 - [ ] Why do tables need a `primary key`?
+
+A primary key is a table column that ensures row-level accessibility of data. It’s important to use primary keys to identify and find unique rows, to update/delete specific records. They also help you avoid inserting duplicate records in a table.
 
 - [ ] What is the name given to a table column that references the primary key on another table.
 
+Foreign key.
+
 - [ ] What do we need in order to have a _many to many_ relationship between two tables.
+
+An extra table that relates the two tables usually by connecting the id of one table to the id of another table.
 
 ## Minimum Viable Product
 
